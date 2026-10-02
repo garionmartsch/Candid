@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Anonymous Feedback{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <nav class="nav">
+    <a class="brand" href="{{ url_for('index') }}">Candid</a>
+    <div class="links">
+      <a href="{{ url_for('faq') }}">How this works</a>
+      {% if current_user %}
+        <a href="{{ url_for('dashboard') }}">Inbox
+          {% if unread_count %}<span class="badge">{{ unread_count }}</span>{% endif %}
+        </a>
+        <a href="{{ url_for('submit') }}">Give feedback</a>
+        <a href="{{ url_for('logout') }}">Log out ({{ current_user.name }})</a>
+      {% else %}
+        <a href="{{ url_for('login') }}">Log in</a>
+        <a href="{{ url_for('signup') }}">Sign up</a>
+      {% endif %}
+    </div>
+  </nav>
+
+  <div class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="flash {{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </div>
+</body>
+</html>

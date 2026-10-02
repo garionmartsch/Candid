@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Inbox{% endblock %}
+{% block content %}
+<div class="card">
+  <h1>Your feedback inbox</h1>
+  <p class="subtitle">Every item here was approved by whoever sent it. There's no way to see who sent what &mdash; that's by design.</p>
+</div>
+
+{% if received|length == 0 %}
+  <div class="card empty-state">Nothing here yet.</div>
+{% else %}
+  {% for fb in received %}
+    <div class="card feedback-item {{ 'unread' if not fb.read_at else '' }}" id="fb-{{ fb.id }}">
+      <div class="meta">
+        <span class="pill {{ fb.category }}">{{ fb.category }}</span>
+        <span class="muted">{{ fb.release_at|fmtdate }}</span>
+      </div>
+      <p style="white-space: pre-wrap;">{{ fb.reworded_text }}</p>
+      {% if not fb.read_at %}
+        <button class="btn secondary" onclick="markRead({{ fb.id }})">Mark as read</button>
+      {% endif %}
+    </div>
+  {% endfor %}
+{% endif %}
+
+<script>
+function markRead(id) {
+  fetch(`/feedback/${id}/mark-read`, { method: "POST" }).then(() => {
+    const el = document.getElementById(`fb-${id}`);
+    if (el) { el.classList.remove("unread"); el.querySelector("button")?.remove(); }
+  });
+}
+</script>
+{% endblock %}

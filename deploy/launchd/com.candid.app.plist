@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  Keeps Candid running via gunicorn, restarting it if it ever crashes and
+  starting it automatically on boot/login.
+
+  BEFORE INSTALLING: replace every /REPLACE/WITH/ABSOLUTE/PATH/TO/feedback-app
+  below with the actual absolute path where you put this app on the server
+  (launchd does not expand ~ or relative paths). Then, as the user who
+  should own this service (see README for the "which user" tradeoff):
+
+    mkdir -p /REPLACE/WITH/ABSOLUTE/PATH/TO/feedback-app/deploy/logs
+    cp com.candid.app.plist ~/Library/LaunchAgents/com.candid.app.plist
+    launchctl load ~/Library/LaunchAgents/com.candid.app.plist
+
+  To stop it: launchctl unload ~/Library/LaunchAgents/com.candid.app.plist
+  To see it running: launchctl list | grep candid
+-->
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.candid.app</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>/REPLACE/WITH/ABSOLUTE/PATH/TO/feedback-app/deploy/run.sh</string>
+  </array>
+
+  <key>WorkingDirectory</key>
+  <string>/REPLACE/WITH/ABSOLUTE/PATH/TO/feedback-app</string>
+
+  <key>RunAtLoad</key>
+  <true/>
+
+  <key>KeepAlive</key>
+  <dict>
+    <key>SuccessfulExit</key>
+    <false/>
+  </dict>
+
+  <key>StandardOutPath</key>
+  <string>/REPLACE/WITH/ABSOLUTE/PATH/TO/feedback-app/deploy/logs/candid.out.log</string>
+
+  <key>StandardErrorPath</key>
+  <string>/REPLACE/WITH/ABSOLUTE/PATH/TO/feedback-app/deploy/logs/candid.err.log</string>
+</dict>
+</plist>

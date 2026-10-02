@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}How this works{% endblock %}
+{% block content %}
+<div class="card">
+  <h1>How this works</h1>
+  <p class="subtitle">The honest, specific version — not just "it's anonymous, trust us."</p>
+</div>
+
+<div class="card">
+  <div class="faq-item">
+    <h2>What does "anonymous" actually mean here?</h2>
+    <p>When you send feedback, the only things ever saved are who it's for, its category, the
+       reworded text, and roughly when to deliver it. Nothing about who wrote it is saved —
+       not your name, not your account, not even a hidden ID linking back to you.</p>
+  </div>
+
+  <div class="faq-item">
+    <h2>Could an admin, or anyone with access to the server, figure out who sent something?</h2>
+    <p>Not from the database — there's nothing in it to find. The one real limit: while you're
+       actively writing and reviewing a draft, your own browser session is, obviously, yours —
+       that's unavoidable since you're the one typing. The moment you approve and send it,
+       that connection is gone for good, including from your own account.</p>
+  </div>
+
+  <div class="faq-item">
+    <h2>Why does it take a few hours to show up, instead of right away?</h2>
+    <p>If feedback appeared the instant you sent it, timing alone could give you away ("this
+       showed up right after our meeting..."). Approved feedback is held and delivered in
+       batches at set times instead, so arrival time doesn't track submission time.</p>
+  </div>
+
+  <div class="faq-item">
+    <h2>Is there a record of what I've sent?</h2>
+    <p>No — on purpose. Keeping a history for you would mean storing the exact link this whole
+       design exists to avoid. Once you approve something, it's out of your hands entirely,
+       including the record of having sent it.</p>
+  </div>
+
+  <div class="faq-item">
+    <h2>What happens to what I write before I send it?</h2>
+    <p>It gets reworded to remove identifying language and personal tone before you see it, and
+       you get to compare the original and the reworded version side by side. You can
+       regenerate it, edit it by hand, or discard it entirely — nothing is sent until you
+       approve it.</p>
+  </div>
+
+  <div class="faq-item">
+    <h2>What if I receive something upsetting?</h2>
+    <p>Feedback here is meant to be constructive, not a place for personal attacks. If
+       something crosses that line, say so to whoever runs this for your team — they can't
+       trace it back to a sender, but they can decide how to handle it going forward.</p>
+  </div>
+</div>
+{% endblock %}

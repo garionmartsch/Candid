@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Review feedback{% endblock %}
+{% block content %}
+<div class="card">
+  <h1>Review before sending</h1>
+  <p class="subtitle">
+    To: <strong>{{ draft.recipient_name }}</strong>
+    &middot; <span class="pill {{ draft.category }}">{{ draft.category }}</span>
+  </p>
+
+  <div class="notice" style="background:#eaf1fd; color:#1d3f8f;">
+    This draft exists only in your browser right now — it hasn't been written to the
+    database. It's discarded the moment you approve, discard, or leave without finishing.
+  </div>
+
+  {% if draft.reword_source == 'heuristic' %}
+    <div class="notice">
+      This was rewritten with a basic built-in cleanup, not full AI rewording (no ANTHROPIC_API_KEY
+      configured on the server). Read it carefully and edit anything that could still identify you
+      before sending.
+    </div>
+  {% endif %}
+
+  <div class="compare">
+    <div class="block original">
+      <h3>What you wrote (never stored, never shown to {{ draft.recipient_name }})</h3>
+      {{ draft.original_text }}
+    </div>
+    <div class="block reworded">
+      <h3>What {{ draft.recipient_name }} will see</h3>
+      <form method="post" action="{{ url_for('edit_reworded') }}">
+        <textarea name="reworded_text">{{ draft.reworded_text }}</textarea>
+        <div class="btn-row">
+          <button class="btn secondary" type="submit">Save edits</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="btn-row">
+    <form method="post" action="{{ url_for('approve') }}">
+      <button class="btn" type="submit">Approve &amp; send anonymously</button>
+    </form>
+    <form method="post" action="{{ url_for('regenerate') }}">
+      <button class="btn secondary" type="submit">Regenerate</button>
+    </form>
+    <form method="post" action="{{ url_for('discard') }}"
+          onsubmit="return confirm('Discard this feedback? It will not be sent.');">
+      <button class="btn danger" type="submit">Discard</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

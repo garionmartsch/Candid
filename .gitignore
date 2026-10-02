@@ -1,0 +1,15 @@
+# Runtime data — never commit real feedback data
+instance/*.db
+instance/*.db-journal
+
+# Real secrets file (only the .example template is tracked)
+deploy/candid.env
+
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# OS cruft
+.DS_Store

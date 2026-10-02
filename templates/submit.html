@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Give feedback{% endblock %}
+{% block content %}
+<div class="card">
+  <h1>Give anonymous feedback</h1>
+  <p class="subtitle">Write it however you naturally would — it'll be reworded before anyone sees it, and you'll approve the final version before it's sent.</p>
+
+  {% if recipients|length == 0 %}
+    <p class="empty-state">No other users have signed up yet, so there's no one to send feedback to.</p>
+  {% else %}
+  <form method="post">
+    <label for="recipient_id">Who is this for?</label>
+    <select id="recipient_id" name="recipient_id" required>
+      <option value="">Choose a person…</option>
+      {% for r in recipients %}
+        <option value="{{ r.id }}" {% if recipient_id == r.id %}selected{% endif %}>{{ r.name }}</option>
+      {% endfor %}
+    </select>
+
+    <label for="category">Type</label>
+    <select id="category" name="category">
+      <option value="suggestion" {% if category == 'suggestion' %}selected{% endif %}>Suggestion</option>
+      <option value="complaint" {% if category == 'complaint' %}selected{% endif %}>Complaint</option>
+    </select>
+
+    <label for="text">Your feedback</label>
+    <textarea id="text" name="text" maxlength="{{ max_chars }}"
+              placeholder="Write freely — names, tone, venting is fine. It gets neutralized next." required>{{ text or '' }}</textarea>
+    <p class="muted char-count" id="char-count">{{ (text or '')|length }} / {{ max_chars }} characters</p>
+    <p class="muted">This draft isn't saved anywhere until you approve it on the next screen — closing this tab loses it.</p>
+
+    <div class="btn-row">
+      <button class="btn" type="submit">Reword &amp; review</button>
+    </div>
+  </form>
+  <script>
+    (function () {
+      var textarea = document.getElementById('text');
+      var counter = document.getElementById('char-count');
+      var max = {{ max_chars }};
+      function update() {
+        var len = textarea.value.length;
+        counter.textContent = len + ' / ' + max + ' characters';
+        counter.classList.toggle('near-limit', len >= max - 50);
+      }
+      textarea.addEventListener('input', update);
+      update();
+    })();
+  </script>
+  {% endif %}
+</div>
+{% endblock %}
